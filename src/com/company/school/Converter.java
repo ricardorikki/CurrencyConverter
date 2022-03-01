@@ -1,6 +1,7 @@
 package com.company.school;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -8,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import javax.swing.JOptionPane;
 
 
 public class Converter extends JFrame{
@@ -28,8 +30,13 @@ public class Converter extends JFrame{
         setContentPane(mainPanel);
         setTitle("Currency Converter");
         setSize(450,300);
+        setLocationRelativeTo(null);
+        setResizable(false);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        //getContentPane().setLayout(new FlowLayout());//specify a layout manager
+        getContentPane().setBackground(Color.darkGray);
         setVisible(true);
+
 
         //Only numbers can be entered
         tfInput.addKeyListener(new KeyAdapter() {
@@ -44,6 +51,20 @@ public class Converter extends JFrame{
             }
         });
 
+        try
+        {
+            for (UIManager.LookAndFeelInfo lnf :
+                    UIManager.getInstalledLookAndFeels()) {
+                if ("Metal".equals(lnf.getName())) {
+                    UIManager.setLookAndFeel(lnf.getClassName());
+                    break;
+                }
+            }
+        } catch (Exception e) { /* Lazy handling this >.> */ }
+        btnConvert.setBackground(new Color(240,240,241));
+        btnConvert.setFocusPainted(false);
+        btnClear.setBackground(new Color(240,240,241));
+        btnClear.setFocusPainted(false);
         //When the Convert Button is Pressed
         btnConvert.addActionListener(new ActionListener() {
             @Override
@@ -92,6 +113,26 @@ public class Converter extends JFrame{
                     forTF.setText("$"+str);
 
                 }
+
+                //Test if the currency field is empty
+                if(tfInput.getText().equals(""))
+                {
+                    JOptionPane.showMessageDialog(null,
+                            "The input amount cannot be empty",
+                            "WARNING",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+                //Test if the type of currency is not selected
+                if(cbCurrency.getSelectedItem().equals("--Select--"))
+                {
+                    JOptionPane.showMessageDialog(null,
+                            "Please select a currency to convert",
+                            "WARNING",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+
+
+
             }
         });
 
